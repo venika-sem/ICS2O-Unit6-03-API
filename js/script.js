@@ -1,29 +1,51 @@
-/* Created by: Venika Sem
- * Created on: Apr 2022
- * This file contains the JS functions for index.html 
-*/
-
-'use strict'
+// Copyright (c) 2022 Venika Sem All rights reserved
+//
+// Created by: Venika Sem
+// Created on: May 2022
+// This file contains the JS functions for index.html
 
 /**
  * Check servie worker.
  */
 if (navigator.serviceWorker) {
-  navigator.serviceWorker.register("/ICS2O-Unit6-01-PWA/sw.js", {
-    scope: "/ICS2O-Unit6-01-PWA/",
+  navigator.serviceWorker.register("/ICS2O-Unit6-03-API/sw.js", {
+    scope: "/ICS2O-Unit6-03-API/",
   })
 }
 
 /**
- * This function converts the temperature from fahrenheit to celsius.
+ * Get API info.
  */
-function convert() {
-  // input
-  const fahrenheitTemperature = parseFloat(document.getElementById('fahrenheit-temperature').value)
+// code from: https://www.youtube.com/watch?v=670f71LTWpM
 
-   // process
-  const temperature = (fahrenheitTemperature - 32) * 5 / 9
+/**
+ * Get API info.
+ */
+const getWeather = async (URLAddress) => {
+  try {
+    const request = await fetch(URLAddress);
+    const jsonData = await request.json();
+    var tempKalvin = jsonData.main.temp;
+    var tempCelsius = 0;
+    const feeling = jsonData.weather[0];
+    const image = feeling.icon;
 
-  // output
-  document.getElementById('temperature').innerHTML = '<p>The temperature in Celsius is: ' + temperature.toFixed(2) + ' °C</p>'
-}
+    console.log(jsonData.weather);
+    document.getElementById("weather-image").innerHTML =
+      "<img src='http://openweathermap.org/img/wn/" +
+      image +
+      "@2x.png' alt='Weather Icon' width='10%'><br><h5>";
+    (">");
+
+    // Calculates from Kalvin to Celsius
+    tempCelsius = tempKalvin - 273.15;
+
+    document.getElementById("weather-api").innerHTML =
+      "The current weather is " + tempCelsius.toFixed(2) + " °C";
+  } catch (err) {
+    console.log(err);
+  }
+};
+getWeather(
+  "https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5"
+);
