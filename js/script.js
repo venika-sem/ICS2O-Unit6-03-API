@@ -37,7 +37,7 @@ const getWeather = async (URLAddress) => {
       "@2x.png' alt='Weather Icon' width='10%'><br><h5>";
     (">");
 
-    // Calculates from Kalvin to Celsius
+    // Converts from Kalvin to Celsius
     tempCelsius = tempKalvin - 273.15;
 
     document.getElementById("weather-api").innerHTML =
